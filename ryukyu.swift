@@ -1,4 +1,4 @@
-let 　SocietyDictionary = [
+let 　ryukyu = [
 "平和論":[7,2],
 "核の科学":[7,2],
 "女性と社会":[7,2],

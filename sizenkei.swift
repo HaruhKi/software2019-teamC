@@ -1,4 +1,4 @@
-let 　SocietyDictionary = [
+let 　sizenkei = [
 "大気の科学":[2,2],
 "地球の科学":[2,2],
 "海洋の科学":[2,2],

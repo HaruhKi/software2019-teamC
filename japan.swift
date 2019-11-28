@@ -1,4 +1,4 @@
-let 　SocietyDictionary = [
+let 　japan = [
 "Basic Japanese I":[10,5],
 "Basic Japanese Ⅱ":[10,3],
 "日本語A":[10,8],
