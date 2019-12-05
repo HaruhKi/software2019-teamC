@@ -27,6 +27,8 @@ let OtherLanguageDictionary = Common.getOtherLanguageDictionary()//外国語
 
 let RyukyuDictionary = Common.getRyukyuDictionary()//琉球
 
+let SyntheticDictionary = Common.getSyntheticDictionary()//総合
+
 let RelatedInformationDictionary  = Common.getRelatedInformationDictionary()//情報関係
 
 let RelationalComputerScienceDictionary = Major.getRelationalComputerScienceDictionary()//知能情報関連
@@ -501,6 +503,31 @@ class TableViewController18: UITableViewController {//知能情報コア
         
         // Configure the cell...
         cell.textLabel?.text = core[indexPath.row]
+        return cell
+    }
+}
+
+class TableViewController19: UITableViewController {//総合
+    let synthetic = [String] (SyntheticDictionary.keys)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return synthetic.count
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier19", for: indexPath)
+        
+        // Configure the cell...
+        cell.textLabel?.text = synthetic[indexPath.row]
         return cell
     }
 }

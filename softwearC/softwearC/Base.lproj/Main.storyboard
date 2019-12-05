@@ -190,7 +190,7 @@
             </objects>
             <point key="canvasLocation" x="-959" y="-2598"/>
         </scene>
-        <!--工学癒合-->
+        <!--工学融合-->
         <scene sceneID="7JJ-8u-wjO">
             <objects>
                 <tableViewController id="ta6-Bh-jR5" customClass="TableViewController15" customModule="softwearC" customModuleProvider="target" sceneMemberID="viewController">
@@ -213,7 +213,7 @@
                             <outlet property="delegate" destination="ta6-Bh-jR5" id="vup-Hl-Z3b"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="工学癒合" id="rEQ-8N-SOM"/>
+                    <tabBarItem key="tabBarItem" title="工学融合" id="rEQ-8N-SOM"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YRy-JY-lFE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -393,6 +393,35 @@
             </objects>
             <point key="canvasLocation" x="57" y="-1021"/>
         </scene>
+        <!--総合-->
+        <scene sceneID="Kb9-Pw-gfr">
+            <objects>
+                <tableViewController id="cAn-H3-pA5" customClass="TableViewController19" customModule="softwearC" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nRA-ah-7S6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier19" id="qfd-aN-JuS">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qfd-aN-JuS" id="vvC-X0-hux">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="cAn-H3-pA5" id="FLY-cg-Rn5"/>
+                            <outlet property="delegate" destination="cAn-H3-pA5" id="oiY-I7-W6x"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="総合" id="VR8-Lp-Ycf"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pzl-Vn-I5B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="820" y="3194"/>
+        </scene>
         <!--共通科目-->
         <scene sceneID="8bp-J3-FmW">
             <objects>
@@ -414,6 +443,7 @@
                         <segue destination="oxH-G4-tiZ" kind="relationship" relationship="viewControllers" id="6o0-fl-5jA"/>
                         <segue destination="CM9-eJ-G0h" kind="relationship" relationship="viewControllers" id="f7N-Il-L5G"/>
                         <segue destination="jdd-xK-HAF" kind="relationship" relationship="viewControllers" id="5v4-cg-ykC"/>
+                        <segue destination="cAn-H3-pA5" kind="relationship" relationship="viewControllers" id="PLx-pT-fND"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z0w-i8-8op" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -626,6 +656,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="b4D-s2-2mP"/>
+        <segue reference="nyw-5P-1FB"/>
     </inferredMetricsTieBreakers>
 </document>
