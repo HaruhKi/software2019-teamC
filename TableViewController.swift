@@ -64,7 +64,7 @@ class TableViewController: UITableViewController {
         cell.textLabel?.text = society[indexPath.row]
         return cell
     }
-    
+
   
     
     /*
