@@ -1,6 +1,15 @@
 
 class MajorClassLists{
-
+    func getGeneralExerciseDictionaly() -> Dictionary<String,Array<Int>>{
+        
+        let lists = [
+            "工学基礎演習":[12,2],
+            "キャリアデザイン入門":[12,1],
+            "プロジェクトデザイン":[12,2],
+            "キャリアデザイン":[12,2]
+        ]
+        return lists
+    }
     func getAdvancedComputerScienceDictionary() -> Dictionary<String,Array<Int>>{
 
 	let lists = [
@@ -33,10 +42,10 @@ class MajorClassLists{
     func getInfomationTechnologyDictionary() -> Dictionary<String,Array<Int>>{
 
 	let lists = [
-   		"プログラミング演習I" :[11:2],
-    		"プログラミング演習Ⅱ":[11,2]
-	]
-	return lists
+   		"プログラミング演習I" :[11,2],
+        "プログラミング演習Ⅱ":[11,2]
+        ]
+        return lists
     }
 
     func getIntelligentInfomationCore() -> Dictionary<String,Array<Int>>{
@@ -44,7 +53,7 @@ class MajorClassLists{
 	let lists = [
 		"プログラミングI":[15,2],
     		"プログラミングⅡ":[15,2],
-    		"技術者の倫理":[15:2],
+    		"技術者の倫理":[15,2],
    		"アルゴリズムとデータ構造":[15,2],
    		"データサイエンス基礎":[15,4],
     		"コンピュータシステム":[15,2],
@@ -54,8 +63,8 @@ class MajorClassLists{
     		"オペレーティングシステム":[15,2],
     		"データベースシステム":[15,2],
     		"人工知能":[15,2]
-	]
-	return lists
+        ]
+        return lists
     }
 
     func getOptionalEngineeringDictionary() -> Dictionary<String,Array<Int>>{
@@ -105,8 +114,8 @@ class MajorClassLists{
 
 	let lists = [
 		"確率および統計":[17,2],
-		"工業数学3":[17,2],
-		"工業数学４":[17,2],
+		"工業数学Ⅲ":[17,2],
+		"工業数学Ⅳ":[17,2],
 	]
 	return lists
     }
@@ -120,20 +129,58 @@ class MajorClassLists{
 	]
 	return lists
     }
-
-    func getReserchExperienceDictionary() -> Dictionary<String,Array<Int>>{
-
-	let lists = [
-    		"知能情報実験I":[13,1.5],
-    		"知能情報実験Ⅱ":[13,1.5],
-    		"知能情報実験Ⅲ":[13,2],
-    		"エンジニアリングデザイン演習":[13,2],
-    		"卒業研究I":[13,2],
-    		"卒業研究Ⅱ":[13,2],
-    		"セミナーI":[13,1],
-    		"セミナーⅡ":[13,1]
-	]
-	return lists
+    func getRelationalComputerScienceDictionary() -> Dictionary<String,Array<Int>>{
+        
+        let lists = [
+            "基礎数学１":[17,1],
+            "基礎数学２":[17,1],
+            "情報処理技術概要":[17,2],
+            "インターンシップ１":[17,1],
+            "インターンシップ２":[17,1],
+            "インターンシップ３":[17,2],
+            "技術英語１":[17,2],
+            "技術英語２":[17,2],
+            "技術英語３":[17,2],
+            "産業社会学言論１":[17,2],
+            "産業社会学言論２":[17,2],
+            "地域創生論":[17,2],
+            "国際協力論":[17,2],
+            "情報技術演習１":[17,2],
+            "情報技術演習２":[17,2],
+            "情報技術演習３":[17,1],
+            "情報技術演習４":[17,1],
+            "知能情報特別講義１":[17,2],
+            "知能情報特別講義２":[17,2],
+            "知能情報特別講義３":[17,1],
+            "知能情報特別講義４":[17,1],
+            "国際インターンシップ１":[17,1],
+            "国際インターンシップ２":[17,2],
+            "Frontiers of Engineering":[17,2],
+            "知的財産権":[17,2],
+            "品質管理":[17,2],
+            "経営工学概論":[17,2],
+            "ICT実践英語１":[17,2],
+            "ICT実践英語２":[17,2],
+            "情報化教育法A":[17,2],
+            "情報化教育法B":[17,2],
+            "職業指導(工学)":[17,2],
+            "教職総合演習(情報)":[17,2],
+            "教職実践演習(高)":[17,2],
+        ]
+        return lists
     }
-
+    
+    func getReserchExperienceDictionary() -> Dictionary<String,Array<Double>>{
+        let lists = [
+        "知能情報実験I":[13,1.5],
+        "知能情報実験Ⅱ":[13,1.5],
+        "知能情報実験Ⅲ":[13,2],
+        "エンジニアリングデザイン演習":[13,2],
+        "卒業研究I":[13,2],
+        "卒業研究Ⅱ":[13,2],
+        "セミナーI":[13,1],
+        "セミナーⅡ":[13,1]
+    ]
+        return lists
+    }
 }
