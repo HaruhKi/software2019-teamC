@@ -56,7 +56,7 @@ func lectureCount(){
     var reqBasicMathNum: Int = 0//14:必修数学基礎
     var intelInfoCoreNum: Int = 0//15:知能情報コア
     var optEngineerNum: Int = 0//16:工学融合
-    var senmonANum: Int = 0//17:選択数学基礎
+    var senmonANum: Int = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
 
     for data in selectedList{
         let lectureNum = data.value
