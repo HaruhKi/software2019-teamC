@@ -19,6 +19,7 @@ let CareerDictionary = Common.getCareerDictionary()//キャリア
 let NatureDictionary = Common.getNatureDictionary()//自然
 let OtherLanguageDictionary = Common.getOtherLanguageDictionary()//外国語
 let RyukyuDictionary = Common.getRyukyuDictionary()//琉球
+let Synthetic = Common.getSyntheticDictionary()//総合
 let RelatedInformationDictionary  = Common.getRelatedInformationDictionary()//情報関係
 let RelationalComputerScienceDictionary = Major.getRelationalComputerScienceDictionary()//知能情報関連
 let AdvancedComputerScienceDictionary = Major.getAdvancedComputerScienceDictionary()//知能情報アドバンスト
@@ -29,12 +30,18 @@ let OptionalBasicMathDictionary = Major.getOptionalBasicMathDictionary()//選択
 let OptionalEngineeringDictionary = Major.getOptionalEngineeringDictionary()//工学融合
 let RequiredBasicMathDictionary = Major.getRequiredBasicMathDictionary()//必修数学基礎
 let ReserchExperienceDictionary = Major.getReserchExperienceDictionary()//研究実験
+
 var selectedList :[String:Array<Int>] = [:]
 
 func searchList(key: String,dict: Dictionary<String, Array<Int>>){
     if !key.isEmpty {
         selectedList[key] = dict[key]
     }
+    print(selectedList)
+}
+
+func delateList(key: String,dict: Dictionary<String, Array<Int>>){
+    selectedList[key] = nil
     print(selectedList)
 }
 
@@ -119,6 +126,7 @@ func lectureCount(){
 class TableViewController: UITableViewController {//社会
     
     let society = [String] (SocietyDictionary.keys)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -129,25 +137,34 @@ class TableViewController: UITableViewController {//社会
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return  society.count
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         cell.textLabel?.text = society[indexPath.row]
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        
+         //チェックマークする
+        currentCell.accessoryType = .checkmark
         searchList(key: currentCell.textLabel!.text!,dict: SocietyDictionary)
         lectureCount()
     }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath )!
+        delateList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
+    }
 }
+
 
 class TableViewController2: UITableViewController {//健康体育
     let sport = [String] (SportDictionary.keys)
@@ -171,12 +188,20 @@ class TableViewController2: UITableViewController {//健康体育
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: SportDictionary)
         lectureCount()
+        currentCell.accessoryType = .checkmark
+        //チェックマークする
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        delateList(key: currentCell.textLabel!.text!, dict: SportDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 class TableViewController3: UITableViewController {//専修
@@ -202,12 +227,22 @@ class TableViewController3: UITableViewController {//専修
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: PreparatoryDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -236,12 +271,21 @@ class TableViewController4: UITableViewController {//人文
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: HumanitiesDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -270,12 +314,21 @@ class TableViewController5: UITableViewController {//キャリア
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: CareerDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: CareerDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -304,12 +357,21 @@ class TableViewController6: UITableViewController {//自然
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: NatureDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -339,12 +401,21 @@ class TableViewController7: UITableViewController {//外国語
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OtherLanguageDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -374,12 +445,21 @@ class TableViewController8: UITableViewController {//琉球
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RyukyuDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -409,12 +489,21 @@ class TableViewController9: UITableViewController {//情報関係
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RelatedInformationDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -444,14 +533,25 @@ class TableViewController10: UITableViewController {//知能情報アドバン�
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: AdvancedComputerScienceDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
+
+
 class TableViewController11: UITableViewController {//選択数学
     let opmath = [String] (OptionalBasicMathDictionary.keys)
     override func viewDidLoad() {
@@ -477,12 +577,21 @@ class TableViewController11: UITableViewController {//選択数学
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OptionalBasicMathDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: OptionalBasicMathDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -511,12 +620,21 @@ class TableViewController12: UITableViewController {//知能情報関連
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RelationalComputerScienceDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -546,12 +664,21 @@ class TableViewController13: UITableViewController {//総合力演習
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: GeneralExerciseDictionaly)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -581,12 +708,21 @@ class TableViewController14: UITableViewController {//情報技術系
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: InfomationTechnologyDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -615,12 +751,21 @@ class TableViewController15: UITableViewController {//工学融合
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OptionalEngineeringDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -650,12 +795,21 @@ class TableViewController16: UITableViewController {//必修数学
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RequiredBasicMathDictionary)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
     }
 }
 
@@ -685,8 +839,8 @@ class TableViewController16: UITableViewController {//必修数学
 //    }
 //    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //    //print the text what selected by cell. In case that not find cell, return first row text
-//        let indexPath = tableView.indexPathForSelectedRow
-//        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+//
+//        let currentCell = tableView.cellForRow(at: indexPath )!
 //    //forced unwrap ! used because the text is optional type
 //    //print(currentCell.textLabel!.text! as Any)
 //        searchList(key: currentCell.textLabel!.text!,dict: ReserchExperienceDictionary)
@@ -719,11 +873,65 @@ class TableViewController18: UITableViewController {//知能情報コア
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print the text what selected by cell. In case that not find cell, return first row text
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath ?? [0,0])!
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: IntelligentInfomationCore)
         lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
+    }
+}
+
+
+class TableViewController19: UITableViewController {//総合
+    let synthetic = [String] (Synthetic.keys)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return synthetic.count
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier19", for: indexPath)
+        
+        // Configure the cell...
+        cell.textLabel?.text = synthetic[indexPath.row]
+        return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //print the text what selected by cell. In case that not find cell, return first row text
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        //forced unwrap ! used because the text is optional type
+        //print(currentCell.textLabel!.text! as Any)
+        searchList(key: currentCell.textLabel!.text!,dict:Synthetic )
+        lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        delateList(key: currentCell.textLabel!.text!, dict: Synthetic)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
+
     }
 }
