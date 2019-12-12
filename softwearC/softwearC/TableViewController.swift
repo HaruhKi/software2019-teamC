@@ -44,6 +44,85 @@ func delateList(key: String,dict: Dictionary<String, Array<Int>>){
     selectedList[key] = nil
     print(selectedList)
 }
+
+func lectureCount(){
+    var lectureCounter : [String:Int] = [:]
+    var humanitiesNum: Int = 0//0:人文
+    var otherlangNum: Int = 0//1:外国語
+    var naturalNum: Int = 0//2:自然系
+    var societyNum: Int = 0//3:社会系
+    var sportNum: Int = 0//4:スポーツ,運動
+    var getSyntheticNum: Int = 0//5:総合
+    var careerNum: Int = 0//6:キャリア
+    var ryukyuNum: Int = 0//7:琉球特色
+    var preparateNum: Int = 0//8:専修
+    var relatedInfoNum: Int = 0//9:情報関係
+    var infoTechNum: Int = 0//11:情報技術系
+    var generalExNum: Int = 0//12:総合力演習
+    var reserchExNum: Int = 0//13:研究実験
+    var reqBasicMathNum: Int = 0//14:必修数学基礎
+    var intelInfoCoreNum: Int = 0//15:知能情報コア
+    var optEngineerNum: Int = 0//16:工学融合
+    var senmonANum: Int = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
+
+    for data in selectedList{
+        let lectureNum = data.value
+        if lectureNum[0] == 0{
+            humanitiesNum += lectureNum[1]
+            lectureCounter["人文"] = humanitiesNum
+        }else if lectureNum[0] == 1{
+            otherlangNum += lectureNum[1]
+            lectureCounter["外国語"] = otherlangNum
+        }else if lectureNum[0] == 2{
+            naturalNum += lectureNum[1]
+            lectureCounter["自然"] = naturalNum
+        }else if lectureNum[0] == 3{
+            societyNum += lectureNum[1]
+            lectureCounter["社会"] = societyNum
+        }else if lectureNum[0] == 4{
+            sportNum += lectureNum[1]
+            lectureCounter["スポーツ"] = sportNum
+        }else if lectureNum[0] == 5{
+            getSyntheticNum += lectureNum[1]
+            lectureCounter["総合"] = getSyntheticNum
+        }else if lectureNum[0] == 6{
+            careerNum += lectureNum[1]
+            lectureCounter["キャリア"] = careerNum
+        }else if lectureNum[0] == 7{
+            ryukyuNum += lectureNum[1]
+            lectureCounter["琉球"] = ryukyuNum
+        }else if lectureNum[0] == 8{
+            preparateNum += lectureNum[1]
+            lectureCounter["専修"] = preparateNum
+        }else if lectureNum[0] == 9{
+            relatedInfoNum += lectureNum[1]
+            lectureCounter["情報関係"] = relatedInfoNum
+        }else if lectureNum[0] == 11{
+            infoTechNum += lectureNum[1]
+            lectureCounter["情報技術系"] = infoTechNum
+        }else if lectureNum[0] == 12{
+            generalExNum += lectureNum[1]
+            lectureCounter["総合力演習"] = generalExNum
+        }else if lectureNum[0] == 13{
+            reserchExNum += lectureNum[1]
+            lectureCounter["研究実験"] = reserchExNum
+        }else if lectureNum[0] == 14{
+            reqBasicMathNum += lectureNum[1]
+            lectureCounter["必修数学基礎"] = reqBasicMathNum
+        }else if lectureNum[0] == 15{
+            intelInfoCoreNum += lectureNum[1]
+            lectureCounter["知能情報コア"] = intelInfoCoreNum
+        }else if lectureNum[0] == 16{
+            optEngineerNum += lectureNum[1]
+            lectureCounter["工学融合"] = optEngineerNum
+        }else if lectureNum[0] == 17{
+        senmonANum += lectureNum[1]
+        lectureCounter["専門A(選数,知アド,知情関連)"] = senmonANum
+    }
+    print(lectureCounter)
+    }
+}
+
 class TableViewController: UITableViewController {//社会
     
     let society = [String] (SocietyDictionary.keys)
@@ -76,6 +155,7 @@ class TableViewController: UITableViewController {//社会
          //チェックマークする
         currentCell.accessoryType = .checkmark
         searchList(key: currentCell.textLabel!.text!,dict: SocietyDictionary)
+        lectureCount()
     }
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath )!
@@ -113,6 +193,7 @@ class TableViewController2: UITableViewController {//健康体育
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: SportDictionary)
+        lectureCount()
         currentCell.accessoryType = .checkmark
         //チェックマークする
     }
@@ -151,8 +232,9 @@ class TableViewController3: UITableViewController {//専修
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: PreparatoryDictionary)
-        currentCell.accessoryType = .checkmark
+        lectureCount()
         //チェックマークする
+        currentCell.accessoryType = .checkmark
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -194,7 +276,7 @@ class TableViewController4: UITableViewController {//人文
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: HumanitiesDictionary)
-        
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -237,6 +319,7 @@ class TableViewController5: UITableViewController {//キャリア
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: CareerDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -279,6 +362,7 @@ class TableViewController6: UITableViewController {//自然
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: NatureDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -322,6 +406,7 @@ class TableViewController7: UITableViewController {//外国語
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OtherLanguageDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -365,6 +450,7 @@ class TableViewController8: UITableViewController {//琉球
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RyukyuDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -408,6 +494,7 @@ class TableViewController9: UITableViewController {//情報関係
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RelatedInformationDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -451,6 +538,7 @@ class TableViewController10: UITableViewController {//知能情報アドバン�
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: AdvancedComputerScienceDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -494,6 +582,7 @@ class TableViewController11: UITableViewController {//選択数学
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OptionalBasicMathDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -506,7 +595,7 @@ class TableViewController11: UITableViewController {//選択数学
     }
 }
 
-class TableViewController12: UITableViewController {//智能情報関連
+class TableViewController12: UITableViewController {//知能情報関連
     let computer = [String] (RelationalComputerScienceDictionary.keys)
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -536,6 +625,7 @@ class TableViewController12: UITableViewController {//智能情報関連
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RelationalComputerScienceDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -579,6 +669,7 @@ class TableViewController13: UITableViewController {//総合力演習
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: GeneralExerciseDictionaly)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -622,6 +713,7 @@ class TableViewController14: UITableViewController {//情報技術系
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: InfomationTechnologyDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -664,6 +756,7 @@ class TableViewController15: UITableViewController {//工学融合
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: OptionalEngineeringDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -707,6 +800,7 @@ class TableViewController16: UITableViewController {//必修数学
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: RequiredBasicMathDictionary)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -750,6 +844,7 @@ class TableViewController16: UITableViewController {//必修数学
 //    //forced unwrap ! used because the text is optional type
 //    //print(currentCell.textLabel!.text! as Any)
 //        searchList(key: currentCell.textLabel!.text!,dict: ReserchExperienceDictionary)
+//    lectureCount()
 //    }
 //}
 
@@ -783,6 +878,7 @@ class TableViewController18: UITableViewController {//知能情報コア
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict: IntelligentInfomationCore)
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -826,6 +922,7 @@ class TableViewController19: UITableViewController {//総合
         //forced unwrap ! used because the text is optional type
         //print(currentCell.textLabel!.text! as Any)
         searchList(key: currentCell.textLabel!.text!,dict:Synthetic )
+        lectureCount()
         //チェックマークする
         currentCell.accessoryType = .checkmark
     }
@@ -835,5 +932,6 @@ class TableViewController19: UITableViewController {//総合
         delateList(key: currentCell.textLabel!.text!, dict: Synthetic)
         // チェックマークを外す
         currentCell.accessoryType = .none
+
     }
 }
