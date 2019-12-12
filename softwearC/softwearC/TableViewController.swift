@@ -29,41 +29,43 @@ let IntelligentInfomationCore = Major.getIntelligentInfomationCore()//知能情�
 let OptionalBasicMathDictionary = Major.getOptionalBasicMathDictionary()//選択数学基礎
 let OptionalEngineeringDictionary = Major.getOptionalEngineeringDictionary()//工学融合
 let RequiredBasicMathDictionary = Major.getRequiredBasicMathDictionary()//必修数学基礎
-let ReserchExperienceDictionary = Major.getReserchExperienceDictionary()//研究実験
+let ResearchExperienceDictionary = Major.getResearchExperienceDictionary()//研究実験
 
-var selectedList :[String:Array<Int>] = [:]
+var selectedList :[String:Array<Double>] = [:]
 
-func searchList(key: String,dict: Dictionary<String, Array<Int>>){
+func searchList(key: String,dict: Dictionary<String, Array<Double>>){
     if !key.isEmpty {
         selectedList[key] = dict[key]
     }
+    print("|select|")
     print(selectedList)
 }
 
-func delateList(key: String,dict: Dictionary<String, Array<Int>>){
+func deleteList(key: String,dict: Dictionary<String, Array<Double>>){
     selectedList[key] = nil
+    print("|delete|")
     print(selectedList)
 }
 
 func lectureCount(){
-    var lectureCounter : [String:Int] = [:]
-    var humanitiesNum: Int = 0//0:人文
-    var otherlangNum: Int = 0//1:外国語
-    var naturalNum: Int = 0//2:自然系
-    var societyNum: Int = 0//3:社会系
-    var sportNum: Int = 0//4:スポーツ,運動
-    var getSyntheticNum: Int = 0//5:総合
-    var careerNum: Int = 0//6:キャリア
-    var ryukyuNum: Int = 0//7:琉球特色
-    var preparateNum: Int = 0//8:専修
-    var relatedInfoNum: Int = 0//9:情報関係
-    var infoTechNum: Int = 0//11:情報技術系
-    var generalExNum: Int = 0//12:総合力演習
-    var reserchExNum: Int = 0//13:研究実験
-    var reqBasicMathNum: Int = 0//14:必修数学基礎
-    var intelInfoCoreNum: Int = 0//15:知能情報コア
-    var optEngineerNum: Int = 0//16:工学融合
-    var senmonANum: Int = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
+    var lectureCounter : [String:Double] = [:]
+    var humanitiesNum: Double = 0//0:人文
+    var otherlangNum: Double = 0//1:外国語
+    var naturalNum: Double = 0//2:自然系
+    var societyNum: Double = 0//3:社会系
+    var sportNum: Double = 0//4:スポーツ,運動
+    var getSyntheticNum: Double = 0//5:総合
+    var careerNum: Double = 0//6:キャリア
+    var ryukyuNum: Double = 0//7:琉球特色
+    var preparateNum: Double = 0//8:専修
+    var relatedInfoNum: Double = 0//9:情報関係
+    var infoTechNum: Double = 0//11:情報技術系
+    var generalExNum: Double = 0//12:総合力演習
+    var ResearchExNum: Double = 0//13:研究実験
+    var reqBasicMathNum: Double = 0//14:必修数学基礎
+    var intelInfoCoreNum: Double = 0//15:知能情報コア
+    var optEngineerNum: Double = 0//16:工学融合
+    var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
 
     for data in selectedList{
         let lectureNum = data.value
@@ -104,8 +106,8 @@ func lectureCount(){
             generalExNum += lectureNum[1]
             lectureCounter["総合力演習"] = generalExNum
         }else if lectureNum[0] == 13{
-            reserchExNum += lectureNum[1]
-            lectureCounter["研究実験"] = reserchExNum
+            ResearchExNum += lectureNum[1]
+            lectureCounter["研究実験"] = ResearchExNum
         }else if lectureNum[0] == 14{
             reqBasicMathNum += lectureNum[1]
             lectureCounter["必修数学基礎"] = reqBasicMathNum
@@ -159,7 +161,7 @@ class TableViewController: UITableViewController {//社会
     }
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath )!
-        delateList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -199,7 +201,7 @@ class TableViewController2: UITableViewController {//健康体育
     }
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
-        delateList(key: currentCell.textLabel!.text!, dict: SportDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: SportDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -240,7 +242,7 @@ class TableViewController3: UITableViewController {//専修
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -283,7 +285,7 @@ class TableViewController4: UITableViewController {//人文
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -326,7 +328,7 @@ class TableViewController5: UITableViewController {//キャリア
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: CareerDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: CareerDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -369,7 +371,7 @@ class TableViewController6: UITableViewController {//自然
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -413,7 +415,7 @@ class TableViewController7: UITableViewController {//外国語
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -457,7 +459,7 @@ class TableViewController8: UITableViewController {//琉球
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -501,7 +503,7 @@ class TableViewController9: UITableViewController {//情報関係
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -545,7 +547,7 @@ class TableViewController10: UITableViewController {//知能情報アドバン�
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -589,7 +591,7 @@ class TableViewController11: UITableViewController {//選択数学
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: OptionalBasicMathDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: OptionalBasicMathDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -632,7 +634,7 @@ class TableViewController12: UITableViewController {//知能情報関連
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -676,7 +678,7 @@ class TableViewController13: UITableViewController {//総合力演習
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
+        deleteList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -720,7 +722,7 @@ class TableViewController14: UITableViewController {//情報技術系
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -763,7 +765,7 @@ class TableViewController15: UITableViewController {//工学融合
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -807,46 +809,56 @@ class TableViewController16: UITableViewController {//必修数学
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
+        deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
 }
 
 
-//class TableViewController17: UITableViewController {//研究実験
-//    let reex = [String] (ReserchExperienceDictionary.keys)
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//    }
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return reex.count
-//    }
-//
-//
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier17", for: indexPath)
-//
-//        // Configure the cell...
-//        cell.textLabel?.text = reex[indexPath.row]
-//        return cell
-//    }
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    //print the text what selected by cell. In case that not find cell, return first row text
-//
-//        let currentCell = tableView.cellForRow(at: indexPath )!
-//    //forced unwrap ! used because the text is optional type
-//    //print(currentCell.textLabel!.text! as Any)
-//        searchList(key: currentCell.textLabel!.text!,dict: ReserchExperienceDictionary)
-//    lectureCount()
-//    }
-//}
+class TableViewController17: UITableViewController {//研究実験
+    let reex = [String] (ResearchExperienceDictionary.keys)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return reex.count
+    }
+
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier17", for: indexPath)
+
+        // Configure the cell...
+        cell.textLabel?.text = reex[indexPath.row]
+        return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //print the text what selected by cell. In case that not find cell, return first row text
+
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        //forced unwrap ! used because the text is optional type
+        //print(currentCell.textLabel!.text! as Any)
+        searchList(key: currentCell.textLabel!.text!,dict: ResearchExperienceDictionary)
+        lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
+    }
+}
 
 class TableViewController18: UITableViewController {//知能情報コア
     let core = [String] (IntelligentInfomationCore.keys)
@@ -885,7 +897,7 @@ class TableViewController18: UITableViewController {//知能情報コア
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
+        deleteList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
         // チェックマークを外す
         currentCell.accessoryType = .none
     }
@@ -929,7 +941,7 @@ class TableViewController19: UITableViewController {//総合
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at:indexPath)!
         
-        delateList(key: currentCell.textLabel!.text!, dict: Synthetic)
+        deleteList(key: currentCell.textLabel!.text!, dict: Synthetic)
         // チェックマークを外す
         currentCell.accessoryType = .none
 
