@@ -637,28 +637,29 @@ import UIKit
 
 class TableViewController20: UITableViewController { // ‥①
     var myTableView1: UITableView!
-    let textArry: [String] = ["社会","人文","自然","スポーツ","スマブラ"]
     
     var mySections = [String](arrayLiteral: "共通科目","専門科目")
-    var twoDimArray = [[String]]()
-    var selectedClass = ""
-    var selectedPerson = ""
+    var myCells = [[String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        myTableView1 = UITableView(frame: self.view.frame, style: UITableView.Style.grouped) // ‥②
-        myTableView1.delegate = self // ‥③
-        myTableView1.dataSource = self // ‥③
-        myTableView1.estimatedRowHeight = 100
-        myTableView1.rowHeight = UITableView.automaticDimension
-        self.view.addSubview(myTableView1)
+        for _ in 0...2 {
+            myCells.append([])
+        }
+        myCells[0] = ["社会","スマブラ","人文"]
+        myCells[1] = ["知能情報関連","知能情報アドバンスト"]
+//        myTableView1 = UITableView(frame: self.view.frame, style: UITableView.Style.grouped) // ‥②
+//        myTableView1.delegate = self // ‥③
+//        myTableView1.dataSource = self // ‥③
+//        myTableView1.estimatedRowHeight = 100
+//        myTableView1.rowHeight = UITableView.automaticDimension
+//        self.view.addSubview(myTableView1)
     }
     
     //④セクション数を指定
     override func numberOfSections(in tableView: UITableView) -> Int {
-        print("セクション数：2")
-        return 2
+        return mySections.count
     }
     //④セクションタイトルを指定
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -666,23 +667,25 @@ class TableViewController20: UITableViewController { // ‥①
     }
     //④セル数を指定
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("セル数：5")
-        return 4
+        return myCells[section].count
     }
     //④セルを生成
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("セルの値を入れていく")
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle,
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.value1,
                                    reuseIdentifier: "aaa\(indexPath.section)-\(indexPath.row)")
 
-        cell.textLabel?.text = textArry[indexPath.row]
+        cell.textLabel?.text = myCells[indexPath.section][indexPath.row]
         
-        //cell.detailTextLabel?.numberOfLines = 0
-        //cell.detailTextLabel?.text = textArry[indexPath.row]
+        cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = "詳細なメッセージ"
         return cell
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        selectedClass = mySections[indexPath.section]
+//        selectedPerson = twoDimArray[indexPath.section][indexPath.row]
+//    }
 }
