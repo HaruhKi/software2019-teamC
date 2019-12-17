@@ -15,6 +15,7 @@
 		2DEC93102387CDDF0034759E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC930E2387CDDF0034759E /* Main.storyboard */; };
 		2DEC93122387CDE00034759E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC93112387CDE00034759E /* Assets.xcassets */; };
 		2DEC93152387CDE00034759E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC93132387CDE00034759E /* LaunchScreen.storyboard */; };
+		A244D52123A8AA580013EF2E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A244D52023A8AA580013EF2E /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		2DEC93112387CDE00034759E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DEC93142387CDE00034759E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DEC93162387CDE00034759E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A244D52023A8AA580013EF2E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				2DEC93162387CDE00034759E /* Info.plist */,
 				2D078294238F6AD00007327C /* CommonClassLists.swift */,
 				2D5FBE9A239110C200025F48 /* MajorClassLists.swift */,
+				A244D52023A8AA580013EF2E /* ViewController.swift */,
 			);
 			path = softwearC;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A244D52123A8AA580013EF2E /* ViewController.swift in Sources */,
 				2D56C0C4238D53D80030D02E /* AppDelegate.swift in Sources */,
 				2D56C0C2238D50B60030D02E /* TableViewController.swift in Sources */,
 				2D5FBE9B239110C200025F48 /* MajorClassLists.swift in Sources */,

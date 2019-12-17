@@ -33,6 +33,8 @@ let ResearchExperienceDictionary = Major.getResearchExperienceDictionary()//研�
 
 var selectedList :[String:Array<Double>] = [:]
 
+var lectureCounter : [String:Double] = [:]
+
 func searchList(key: String,dict: Dictionary<String, Array<Double>>){
     if !key.isEmpty {
         selectedList[key] = dict[key]
@@ -48,7 +50,7 @@ func deleteList(key: String,dict: Dictionary<String, Array<Double>>){
 }
 
 func lectureCount(){
-    var lectureCounter : [String:Double] = [:]
+    //var lectureCounter : [String:Double] = [:]
     var humanitiesNum: Double = 0//0:人文
     var otherlangNum: Double = 0//1:外国語
     var naturalNum: Double = 0//2:自然系
@@ -946,4 +948,49 @@ class TableViewController19: UITableViewController {//総合
         currentCell.accessoryType = .none
 
     }
+    
+class TableViewController20: UITableViewController {//完了
+    let synthetic = [String] (Synthetic.keys)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return synthetic.count
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier20", for: indexPath)
+        
+        // Configure the cell...
+        cell.textLabel?.text = synthetic[indexPath.row]
+        return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //print the text what selected by cell. In case that not find cell, return first row text
+        
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        //forced unwrap ! used because the text is optional type
+        //print(currentCell.textLabel!.text! as Any)
+        searchList(key: currentCell.textLabel!.text!,dict:Synthetic )
+        lectureCount()
+        //チェックマークする
+        currentCell.accessoryType = .checkmark
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at:indexPath)!
+        
+        deleteList(key: currentCell.textLabel!.text!, dict: Synthetic)
+        // チェックマークを外す
+        currentCell.accessoryType = .none
+
+    }
 }
+}
+
