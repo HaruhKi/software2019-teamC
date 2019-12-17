@@ -631,3 +631,58 @@ class TableViewController18: UITableViewController {//知能情報コア
         searchList(key: currentCell.textLabel!.text!,dict: IntelligentInfomationCore)
     }
 }
+
+//事例
+import UIKit
+
+class TableViewController20: UITableViewController { // ‥①
+    var myTableView1: UITableView!
+    let textArry: [String] = ["社会","人文","自然","スポーツ","スマブラ"]
+    
+    var mySections = [String](arrayLiteral: "共通科目","専門科目")
+    var twoDimArray = [[String]]()
+    var selectedClass = ""
+    var selectedPerson = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        myTableView1 = UITableView(frame: self.view.frame, style: UITableView.Style.grouped) // ‥②
+        myTableView1.delegate = self // ‥③
+        myTableView1.dataSource = self // ‥③
+        myTableView1.estimatedRowHeight = 100
+        myTableView1.rowHeight = UITableView.automaticDimension
+        self.view.addSubview(myTableView1)
+    }
+    
+    //④セクション数を指定
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        print("セクション数：2")
+        return 2
+    }
+    //④セクションタイトルを指定
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return mySections[section]
+    }
+    //④セル数を指定
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("セル数：5")
+        return 4
+    }
+    //④セルを生成
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("セルの値を入れていく")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle,
+                                   reuseIdentifier: "aaa\(indexPath.section)-\(indexPath.row)")
+
+        cell.textLabel?.text = textArry[indexPath.row]
+        
+        //cell.detailTextLabel?.numberOfLines = 0
+        //cell.detailTextLabel?.text = textArry[indexPath.row]
+        return cell
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+}
