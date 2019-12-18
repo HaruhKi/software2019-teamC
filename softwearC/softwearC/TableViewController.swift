@@ -32,8 +32,26 @@ let RequiredBasicMathDictionary = Major.getRequiredBasicMathDictionary()//必修
 let ResearchExperienceDictionary = Major.getResearchExperienceDictionary()//研究実験
 
 var selectedList :[String:Array<Double>] = [:]
-
 var lectureCounter : [String:Double] = [:]
+
+var humanitiesNum: Double = 0//0:人文
+var otherlangNum: Double = 0//1:外国語
+var naturalNum: Double = 0//2:自然系
+var societyNum: Double = 0//3:社会系
+var sportNum: Double = 0//4:スポーツ,運動
+var getSyntheticNum: Double = 0//5:総合
+var careerNum: Double = 0//6:キャリア
+var ryukyuNum: Double = 0//7:琉球特色
+var preparateNum: Double = 0//8:専修
+var relatedInfoNum: Double = 0//9:情報関係
+var infoTechNum: Double = 0//11:情報技術系
+var generalExNum: Double = 0//12:総合力演習
+var ResearchExNum: Double = 0//13:研究実験
+var reqBasicMathNum: Double = 0//14:必修数学基礎
+var intelInfoCoreNum: Double = 0//15:知能情報コア
+var optEngineerNum: Double = 0//16:工学融合
+var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連*/
+
 
 func searchList(key: String,dict: Dictionary<String, Array<Double>>){
     if !key.isEmpty {
@@ -51,6 +69,7 @@ func deleteList(key: String,dict: Dictionary<String, Array<Double>>){
 
 func lectureCount(){
     //var lectureCounter : [String:Double] = [:]
+    
     var humanitiesNum: Double = 0//0:人文
     var otherlangNum: Double = 0//1:外国語
     var naturalNum: Double = 0//2:自然系
@@ -67,7 +86,7 @@ func lectureCount(){
     var reqBasicMathNum: Double = 0//14:必修数学基礎
     var intelInfoCoreNum: Double = 0//15:知能情報コア
     var optEngineerNum: Double = 0//16:工学融合
-    var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
+    var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連*/
 
     for data in selectedList{
         let lectureNum = data.value
@@ -166,6 +185,7 @@ class TableViewController: UITableViewController {//社会
         deleteList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -206,6 +226,7 @@ class TableViewController2: UITableViewController {//健康体育
         deleteList(key: currentCell.textLabel!.text!, dict: SportDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 class TableViewController3: UITableViewController {//専修
@@ -247,6 +268,7 @@ class TableViewController3: UITableViewController {//専修
         deleteList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -290,6 +312,7 @@ class TableViewController4: UITableViewController {//人文
         deleteList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -333,6 +356,7 @@ class TableViewController5: UITableViewController {//キャリア
         deleteList(key: currentCell.textLabel!.text!, dict: CareerDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -376,6 +400,7 @@ class TableViewController6: UITableViewController {//自然
         deleteList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -420,6 +445,7 @@ class TableViewController7: UITableViewController {//外国語
         deleteList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -464,6 +490,7 @@ class TableViewController8: UITableViewController {//琉球
         deleteList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -508,6 +535,7 @@ class TableViewController9: UITableViewController {//情報関係
         deleteList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -552,6 +580,7 @@ class TableViewController10: UITableViewController {//知能情報アドバン�
         deleteList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -596,6 +625,7 @@ class TableViewController11: UITableViewController {//選択数学
         deleteList(key: currentCell.textLabel!.text!, dict: OptionalBasicMathDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -639,6 +669,7 @@ class TableViewController12: UITableViewController {//知能情報関連
         deleteList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -683,6 +714,7 @@ class TableViewController13: UITableViewController {//総合力演習
         deleteList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -727,6 +759,7 @@ class TableViewController14: UITableViewController {//情報技術系
         deleteList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -770,6 +803,7 @@ class TableViewController15: UITableViewController {//工学融合
         deleteList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -814,6 +848,7 @@ class TableViewController16: UITableViewController {//必修数学
         deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -859,6 +894,7 @@ class TableViewController17: UITableViewController {//研究実験
         deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -902,6 +938,7 @@ class TableViewController18: UITableViewController {//知能情報コア
         deleteList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
     }
 }
 
@@ -946,10 +983,11 @@ class TableViewController19: UITableViewController {//総合
         deleteList(key: currentCell.textLabel!.text!, dict: Synthetic)
         // チェックマークを外す
         currentCell.accessoryType = .none
+        lectureCount()
 
     }
     
-class TableViewController20: UITableViewController {//完了
+/*class TableViewController20: UITableViewController {//完了
     let synthetic = [String] (Synthetic.keys)
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -991,6 +1029,6 @@ class TableViewController20: UITableViewController {//完了
         currentCell.accessoryType = .none
 
     }
-}
+}*/
 }
 
