@@ -78,7 +78,7 @@ func lectureCount(){
     var getSyntheticNum: Double = 0//5:総合
     var careerNum: Double = 0//6:キャリア
     var ryukyuNum: Double = 0//7:琉球特色
-    var preparateNum: Double = 0//8:専修
+    var preparateNum: Double = 0//8:先修
     var relatedInfoNum: Double = 0//9:情報関係
     var infoTechNum: Double = 0//11:情報技術系
     var generalExNum: Double = 0//12:総合力演習
@@ -116,7 +116,7 @@ func lectureCount(){
             lectureCounter["琉球"] = ryukyuNum
         }else if lectureNum[0] == 8{
             preparateNum += lectureNum[1]
-            lectureCounter["専修"] = preparateNum
+            lectureCounter["先修"] = preparateNum
         }else if lectureNum[0] == 9{
             relatedInfoNum += lectureNum[1]
             lectureCounter["情報関係"] = relatedInfoNum

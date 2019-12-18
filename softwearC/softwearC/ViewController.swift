@@ -18,11 +18,8 @@ class ViewController: UIViewController {
         if let lecture_num = lectureCounter["人文"]{
             
             label.text = String("\(lecture_num)"+"/2")
-            print(humanitiesNum)
         }
         else{
-            print("no")
-            
             label.text = "0 /2"
             print(humanitiesNum)
         }
@@ -154,5 +151,25 @@ class ViewController: UIViewController {
 class ViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //人文
+        let label = UILabel()
+        if let lecture_num = lectureCounter["先修"]{
+            
+            label.text = String("\(lecture_num)"+"/8")
+            print(humanitiesNum)
+        }
+        else{
+            print("no")
+            
+            label.text = "0 /8"
+            print(humanitiesNum)
+        }
+        label.font = label.font.withSize(30)//sizeTOFitの前にいれないと文字が切れる
+        label.sizeToFit()
+        label.center = CGPoint(x: 250, y: 90) // UILabelの中央座標を (200, 100) とする
+        self.view.addSubview(label)
+
+        
     }
 }
