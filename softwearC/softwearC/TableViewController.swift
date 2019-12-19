@@ -19,7 +19,7 @@ let CareerDictionary = Common.getCareerDictionary()//キャリア
 let NatureDictionary = Common.getNatureDictionary()//自然
 let OtherLanguageDictionary = Common.getOtherLanguageDictionary()//外国語
 let RyukyuDictionary = Common.getRyukyuDictionary()//琉球
-let Synthetic = Common.getSyntheticDictionary()//総合
+let SyntheticDictionar = Common.getSyntheticDictionary()//総合
 let RelatedInformationDictionary  = Common.getRelatedInformationDictionary()//情報関係
 let RelationalComputerScienceDictionary = Major.getRelationalComputerScienceDictionary()//知能情報関連
 let AdvancedComputerScienceDictionary = Major.getAdvancedComputerScienceDictionary()//知能情報アドバンスト
@@ -66,7 +66,7 @@ func lectureCount(){
     var intelInfoCoreNum: Double = 0//15:知能情報コア
     var optEngineerNum: Double = 0//16:工学融合
     var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
-
+    
     for data in selectedList{
         let lectureNum = data.value
         if lectureNum[0] == 0{
@@ -118,26 +118,59 @@ func lectureCount(){
             optEngineerNum += lectureNum[1]
             lectureCounter["工学融合"] = optEngineerNum
         }else if lectureNum[0] == 17{
-        senmonANum += lectureNum[1]
-        lectureCounter["専門A(選数,知アド,知情関連)"] = senmonANum
-    }
-    print(lectureCounter)
+            senmonANum += lectureNum[1]
+            lectureCounter["専門A(選数,知アド,知情関連)"] = senmonANum
+        }
+        print(lectureCounter)
     }
 }
 
+let society = [String] (SocietyDictionary.keys)
+let sport = [String] (SportDictionary.keys)
+let preparatory = [String] (PreparatoryDictionary.keys)
+let humanities = [String](HumanitiesDictionary.keys)
+let career = [String](CareerDictionary.keys)
+let nature = [String](NatureDictionary.keys)
+let other = [String](OtherLanguageDictionary.keys)
+let ryukyu = [String](RyukyuDictionary.keys)
+let reinformation = [String](RelatedInformationDictionary.keys)
+let advance = [String] (AdvancedComputerScienceDictionary.keys)
+let opmath = [String] (OptionalBasicMathDictionary.keys)
+let computer = [String] (RelationalComputerScienceDictionary.keys)
+let general = [String] (GeneralExerciseDictionaly.keys)
+let infomationtec = [String] (InfomationTechnologyDictionary.keys)
+let opengineer = [String] (OptionalEngineeringDictionary.keys)
+let remath = [String] (RequiredBasicMathDictionary.keys)
+let reex = [String] (ResearchExperienceDictionary.keys)
+let core = [String] (IntelligentInfomationCore.keys)
+let synthetic = [String](SyntheticDictionar.keys)
+
 class TableViewController: UITableViewController {//社会
     
-    let society = [String] (SocietyDictionary.keys)
+    let sortsociety = society.sorted()//五十音でソート
+    var checkMarkArray: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray") == nil {//初期状態の時
+            for _ in 0 ... society.count - 1 {
+                checkMarkArray.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray, forKey: "checkmarkarray")
+        } else {//2回目以降
+            checkMarkArray = UserDefaults.standard.array(forKey: "checkmarkarray") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray)
     }
-    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -147,803 +180,1363 @@ class TableViewController: UITableViewController {//社会
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        cell.textLabel?.text = society[indexPath.row]
+        cell.textLabel?.text = sortsociety[indexPath.row]
+        
+        if checkMarkArray[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let currentCell = tableView.cellForRow(at: indexPath )!
         
-         //チェックマークする
-        currentCell.accessoryType = .checkmark
-        searchList(key: currentCell.textLabel!.text!,dict: SocietyDictionary)
-        lectureCount()
+        checkMarkArray[indexPath.row] = changeBool(value: checkMarkArray[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: SocietyDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray, forKey: "checkmarkarray")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath )!
-        deleteList(key: currentCell.textLabel!.text!, dict: SocietyDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
     }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
-
 
 class TableViewController2: UITableViewController {//健康体育
-    let sport = [String] (SportDictionary.keys)
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return sport.count
-    }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier2", for: indexPath)
-        
-        // Configure the cell...
-        cell.textLabel?.text = sport[indexPath.row]
-        return cell
-    }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
-        let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: SportDictionary)
-        lectureCount()
-        currentCell.accessoryType = .checkmark
-        //チェックマークする
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
-        deleteList(key: currentCell.textLabel!.text!, dict: SportDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
-    }
-}
-class TableViewController3: UITableViewController {//専修
-    let preparatory = [String] (PreparatoryDictionary.keys)
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    let sortsport = sport.sorted()
+    var checkMarkArray2: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray2") == nil {//初期状態の時
+            for _ in 0 ... sport.count - 1 {
+                checkMarkArray2.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray2, forKey: "checkmarkarray2")
+        } else {//2回目以降
+            checkMarkArray2 = UserDefaults.standard.array(forKey: "checkmarkarray2") as! [Bool]//前回の保存状態を表示
+        }
+        
+    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return preparatory.count
-    }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier3", for: indexPath)
-        
-        // Configure the cell...
-        cell.textLabel?.text = preparatory[indexPath.row]
-        return cell
-    }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
-        let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: PreparatoryDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
+        // #warning Incomplete implementation, return the number of sections
+        return  1
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return  sport.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier2", for: indexPath)
+        cell.textLabel?.text = sortsport[indexPath.row]
         
-        deleteList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        if checkMarkArray2[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        
+        checkMarkArray2[indexPath.row] = changeBool(value: checkMarkArray2[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray2[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: SportDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: SportDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray2, forKey: "checkmarkarray2")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
+}
+class TableViewController3: UITableViewController {//専修
+    let sortpreparatory = preparatory.sorted()//五十音でソート
+    var checkMarkArray3 : [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray3") == nil {//初期状態の時
+            for _ in 0 ... preparatory.count - 1 {
+                checkMarkArray3 .append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray3 , forKey: "checkmarkarray3")
+        } else {//2回目以降
+            checkMarkArray3  = UserDefaults.standard.array(forKey: "checkmarkarray3") as! [Bool]//前回の保存状態を表示
+        }
+        
+    }
+    // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return  1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return  preparatory.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier3", for: indexPath)
+        cell.textLabel?.text = sortpreparatory[indexPath.row]
+        
+        if checkMarkArray3 [indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        
+        checkMarkArray3 [indexPath.row] = changeBool(value: checkMarkArray3 [indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray3 [indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: PreparatoryDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: PreparatoryDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray3 , forKey: "checkmarkarray3")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 class TableViewController4: UITableViewController {//人文
-    let humanities = [String](HumanitiesDictionary.keys)
+    let sorthumanities = humanities.sorted()//五十音でソート
+    var checkMarkArray4: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectedList = userDefaults.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        if userDefaults.array(forKey: "checkmarkarray4") == nil{//初期状態の時
+            for _ in 0 ... humanities.count - 1 {
+                checkMarkArray4.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray4, forKey: "checkmarkarray4")
+        } else {//2回目以降
+            checkMarkArray4 = UserDefaults.standard.array(forKey: "checkmarkarray4") as! [Bool]//前回の保存状態を表示
+        }
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return humanities.count
+        return  humanities.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier4", for: indexPath)
+        cell.textLabel?.text = sorthumanities[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = humanities[indexPath.row]
+        if checkMarkArray4[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: HumanitiesDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
+        checkMarkArray4[indexPath.row] = changeBool(value: checkMarkArray4[indexPath.row])//クリックした講義のboolを変換
         
-        deleteList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        if checkMarkArray4[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: HumanitiesDictionary)
+            lectureCount()
+            print(selectedList)
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
+            lectureCount()
+            print(selectedList)
+        }
+        UserDefaults.standard.set(checkMarkArray4, forKey: "checkmarkarray4")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 class TableViewController5: UITableViewController {//キャリア
-    let career = [String](CareerDictionary.keys)
+    let sortcareer = career.sorted()//五十音でソート
+    var checkMarkArray5: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray5") == nil {//初期状態の時
+            for _ in 0 ... career.count - 1 {
+                checkMarkArray5.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray5, forKey: "checkmarkarray5")
+        } else {//2回目以降
+            checkMarkArray5 = UserDefaults.standard.array(forKey: "checkmarkarray5") as! [Bool]//前回の保存状態を表示
+        }
+        
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return career.count
+        return  career.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier5", for: indexPath)
+        cell.textLabel?.text = sortcareer[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = career[indexPath.row]
+        if checkMarkArray5[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: CareerDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: CareerDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray5[indexPath.row] = changeBool(value: checkMarkArray5[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray5[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: CareerDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict:CareerDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray5, forKey: "checkmarkarray5")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 class TableViewController6: UITableViewController {//自然
-    let nature = [String](NatureDictionary.keys)
+    
+    let sortnature = nature.sorted()//五十音でソート
+    var checkMarkArray6: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray6") == nil {//初期状態の時
+            for _ in 0 ... nature.count - 1 {
+                checkMarkArray6.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray6, forKey: "checkmarkarray6")
+        } else {//2回目以降
+            checkMarkArray6 = UserDefaults.standard.array(forKey: "checkmarkarray6") as! [Bool]//前回の保存状態を表示
+        }
+        
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return nature.count
+        return  nature.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier6", for: indexPath)
+        cell.textLabel?.text = sortnature[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = nature[indexPath.row]
+        if checkMarkArray6[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: NatureDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray6[indexPath.row] = changeBool(value: checkMarkArray6[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray6[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict:NatureDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: NatureDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray6, forKey: "checkmarkarray6")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 
 class TableViewController7: UITableViewController {//外国語
-    let other = [String](OtherLanguageDictionary.keys)
+    
+    let sortother = other.sorted()//五十音でソート
+    var checkMarkArray7: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray7") == nil {//初期状態の時
+            for _ in 0 ... other.count - 1 {
+                checkMarkArray7.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray7, forKey: "checkmarkarray7")
+        } else {//2回目以降
+            checkMarkArray7 = UserDefaults.standard.array(forKey: "checkmarkarray7") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray7)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return other.count
+        return  other.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier7", for: indexPath)
+        cell.textLabel?.text = sortother[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = other[indexPath.row]
+        if checkMarkArray7[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: OtherLanguageDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray7[indexPath.row] = changeBool(value: checkMarkArray7[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray7[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: OtherLanguageDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: OtherLanguageDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray7, forKey: "checkmarkarray7")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 class TableViewController8: UITableViewController {//琉球
     
-    let ryukyu = [String](RyukyuDictionary.keys)
+    let sortryukyu = ryukyu.sorted()//五十音でソート
+    var checkMarkArray8: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray8") == nil {//初期状態の時
+            for _ in 0 ... ryukyu.count - 1 {
+                checkMarkArray8.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray8, forKey: "checkmarkarray8")
+        } else {//2回目以降
+            checkMarkArray8 = UserDefaults.standard.array(forKey: "checkmarkarray8") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray8)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return ryukyu.count
+        return  ryukyu.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier8", for: indexPath)
+        cell.textLabel?.text = sortryukyu[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = ryukyu[indexPath.row]
+        if checkMarkArray8[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: RyukyuDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray8[indexPath.row] = changeBool(value: checkMarkArray8[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray8[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: RyukyuDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: RyukyuDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray8, forKey: "checkmarkarray8")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 class TableViewController9: UITableViewController {//情報関係
     
-    let information = [String](RelatedInformationDictionary.keys)
+    let sortreinfomation = reinformation.sorted()//五十音でソート
+    var checkMarkArray9: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray9") == nil {//初期状態の時
+            for _ in 0 ... reinformation.count - 1 {
+                checkMarkArray9.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray9, forKey: "checkmarkarray9")
+        } else {//2回目以降
+            checkMarkArray9 = UserDefaults.standard.array(forKey: "checkmarkarray9") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray9)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return information.count
+        return  reinformation.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier9", for: indexPath)
+        cell.textLabel?.text = sortreinfomation[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = information[indexPath.row]
+        if checkMarkArray9[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: RelatedInformationDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray9[indexPath.row] = changeBool(value: checkMarkArray9[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray9[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: RelatedInformationDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: RelatedInformationDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray9, forKey: "checkmarkarray9")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 
 class TableViewController10: UITableViewController {//知能情報アドバンスト
-    let advance = [String] (AdvancedComputerScienceDictionary.keys)
+    
+    let sortadvance = advance.sorted()//五十音でソート
+    var checkMarkArray10: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray10") == nil {//初期状態の時
+            for _ in 0 ... advance.count - 1 {
+                checkMarkArray10.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray10, forKey: "checkmarkarray10")
+        } else {//2回目以降
+            checkMarkArray10 = UserDefaults.standard.array(forKey: "checkmarkarray10") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray10)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return advance.count
+        return  advance.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier10", for: indexPath)
+        cell.textLabel?.text = sortadvance[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = advance[indexPath.row]
+        if checkMarkArray10[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: AdvancedComputerScienceDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray10[indexPath.row] = changeBool(value: checkMarkArray10[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray10[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: AdvancedComputerScienceDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: AdvancedComputerScienceDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray10, forKey: "checkmarkarray10")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 
 class TableViewController11: UITableViewController {//選択数学
-    let opmath = [String] (OptionalBasicMathDictionary.keys)
+    let sortopmath = opmath.sorted()//五十音でソート
+    var checkMarkArray11: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray11") == nil {//初期状態の時
+            for _ in 0 ... opmath.count - 1 {
+                checkMarkArray11.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray11, forKey: "checkmarkarray11")
+        } else {//2回目以降
+            checkMarkArray11 = UserDefaults.standard.array(forKey: "checkmarkarray11") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray11)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return opmath.count
+        return  opmath.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier11", for: indexPath)
+        cell.textLabel?.text = sortopmath[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = opmath[indexPath.row]
+        if checkMarkArray11[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: OptionalBasicMathDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: OptionalBasicMathDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray11[indexPath.row] = changeBool(value: checkMarkArray11[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray11[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: OptionalBasicMathDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict:OptionalBasicMathDictionary
+            )
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray11, forKey: "checkmarkarray11")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 class TableViewController12: UITableViewController {//知能情報関連
-    let computer = [String] (RelationalComputerScienceDictionary.keys)
+    
+    let sortcomputer = computer.sorted()//五十音でソート
+    var checkMarkArray12: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray12") == nil {//初期状態の時
+            for _ in 0 ... computer.count - 1 {
+                checkMarkArray12.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray12, forKey: "checkmarkarray12")
+        } else {//2回目以降
+            checkMarkArray12 = UserDefaults.standard.array(forKey: "checkmarkarray12") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray12)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return computer.count
+        return  computer.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier12", for: indexPath)
+        cell.textLabel?.text = sortcomputer[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = computer[indexPath.row]
+        if checkMarkArray12[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: RelationalComputerScienceDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray12[indexPath.row] = changeBool(value: checkMarkArray12[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray12[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict:RelationalComputerScienceDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: RelationalComputerScienceDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray12, forKey: "checkmarkarray12")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 
 class TableViewController13: UITableViewController {//総合力演習
-    let general = [String] (GeneralExerciseDictionaly.keys)
+    
+    let sortgeneral = general.sorted()//五十音でソート
+    var checkMarkArray13: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray13") == nil {//初期状態の時
+            for _ in 0 ... general.count - 1 {
+                checkMarkArray13.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray13, forKey: "checkmarkarray13")
+        } else {//2回目以降
+            checkMarkArray13 = UserDefaults.standard.array(forKey: "checkmarkarray13") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray13)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return general.count
+        return  general.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier13", for: indexPath)
+        cell.textLabel?.text = sortgeneral[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = general[indexPath.row]
+        if checkMarkArray13[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: GeneralExerciseDictionaly)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray13[indexPath.row] = changeBool(value: checkMarkArray13[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray13[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: GeneralExerciseDictionaly)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: GeneralExerciseDictionaly)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray13, forKey: "checkmarkarray13")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 
 class TableViewController14: UITableViewController {//情報技術系
-    let infomation = [String] (InfomationTechnologyDictionary.keys)
+    
+    let sortinfomationtec = infomationtec.sorted()//五十音でソート
+    var checkMarkArray14: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray14") == nil {//初期状態の時
+            for _ in 0 ... infomationtec.count - 1 {
+                checkMarkArray14.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray14, forKey: "checkmarkarray14")
+        } else {//2回目以降
+            checkMarkArray14 = UserDefaults.standard.array(forKey: "checkmarkarray14") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray14)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return infomation.count
+        return  infomationtec.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier14", for: indexPath)
+        cell.textLabel?.text = sortinfomationtec[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = infomation[indexPath.row]
+        if checkMarkArray14[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: InfomationTechnologyDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray14[indexPath.row] = changeBool(value: checkMarkArray14[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray14[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: InfomationTechnologyDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: InfomationTechnologyDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray14, forKey: "checkmarkarray14")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 class TableViewController15: UITableViewController {//工学融合
-    let opengineer = [String] (OptionalEngineeringDictionary.keys)
+    
+    let sortopengineer = opengineer.sorted()//五十音でソート
+    var checkMarkArray15: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray15") == nil {//初期状態の時
+            for _ in 0 ... opengineer.count - 1 {
+                checkMarkArray15.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray15, forKey: "checkmarkarray15")
+        } else {//2回目以降
+            checkMarkArray15 = UserDefaults.standard.array(forKey: "checkmarkarray15") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray15)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return opengineer.count
+        return  opengineer.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier15", for: indexPath)
+        cell.textLabel?.text = sortopengineer[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = opengineer[indexPath.row]
+        if checkMarkArray15[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: OptionalEngineeringDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray15[indexPath.row] = changeBool(value: checkMarkArray15[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray15[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: OptionalEngineeringDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: OptionalEngineeringDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray15, forKey: "checkmarkarray15")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 
 class TableViewController16: UITableViewController {//必修数学
-    let remath = [String] (RequiredBasicMathDictionary.keys)
+    
+    let sortremath = remath.sorted()//五十音でソート
+    var checkMarkArray16: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray16") == nil {//初期状態の時
+            for _ in 0 ... remath.count - 1 {
+                checkMarkArray16.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray16, forKey: "checkmarkarray16")
+        } else {//2回目以降
+            checkMarkArray16 = UserDefaults.standard.array(forKey: "checkmarkarray16") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray16)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return remath.count
+        return  remath.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier16", for: indexPath)
+        cell.textLabel?.text = sortremath[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = remath[indexPath.row]
+        if checkMarkArray16[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: RequiredBasicMathDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray16[indexPath.row] = changeBool(value: checkMarkArray16[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray16[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: RequiredBasicMathDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray16, forKey: "checkmarkarray16")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
     }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 
 class TableViewController17: UITableViewController {//研究実験
-    let reex = [String] (ResearchExperienceDictionary.keys)
+    let sortreex = reex.sorted()//五十音でソート
+    var checkMarkArray17: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray17") == nil {//初期状態の時
+            for _ in 0 ... reex.count - 1 {
+                checkMarkArray17.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray17, forKey: "checkmarkarray17")
+        } else {//2回目以降
+            checkMarkArray17 = UserDefaults.standard.array(forKey: "checkmarkarray17") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray17)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return reex.count
-    }
-
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier17", for: indexPath)
-
-        // Configure the cell...
-        cell.textLabel?.text = reex[indexPath.row]
-        return cell
-    }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //print the text what selected by cell. In case that not find cell, return first row text
-
-        let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: ResearchExperienceDictionary)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
+        return  1
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
-        
-        deleteList(key: currentCell.textLabel!.text!, dict: RequiredBasicMathDictionary)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return  reex.count
     }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier17", for: indexPath)
+        cell.textLabel?.text = sortreex[indexPath.row]
+        
+        if checkMarkArray17[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        
+        checkMarkArray17[indexPath.row] = changeBool(value: checkMarkArray17[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray17[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: ResearchExperienceDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: ResearchExperienceDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray17, forKey: "checkmarkarray17")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+    
 }
 
 class TableViewController18: UITableViewController {//知能情報コア
-    let core = [String] (IntelligentInfomationCore.keys)
+    let sortcore = core.sorted()//五十音でソート
+    var checkMarkArray18: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray18") == nil {//初期状態の時
+            for _ in 0 ... core.count - 1 {
+                checkMarkArray18.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray18, forKey: "checkmarkarray18")
+        } else {//2回目以降
+            checkMarkArray18 = UserDefaults.standard.array(forKey: "checkmarkarray18") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray18)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return core.count
+        return  core.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier18", for: indexPath)
+        cell.textLabel?.text = sortcore[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = core[indexPath.row]
+        if checkMarkArray18[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict: IntelligentInfomationCore)
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
+        checkMarkArray18[indexPath.row] = changeBool(value: checkMarkArray18[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray18[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict:IntelligentInfomationCore)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: IntelligentInfomationCore)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray18, forKey: "checkmarkarray18")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
 
 
 class TableViewController19: UITableViewController {//総合
-    let synthetic = [String] (Synthetic.keys)
+    
+    let sortsynthetic = synthetic.sorted()//五十音でソート
+    var checkMarkArray19: [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        
+        if userDefaults.array(forKey: "checkmarkarray19") == nil {//初期状態の時
+            for _ in 0 ... synthetic.count - 1 {
+                checkMarkArray19.append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray19, forKey: "checkmarkarray19")
+        } else {//2回目以降
+            checkMarkArray19 = UserDefaults.standard.array(forKey: "checkmarkarray19") as! [Bool]//前回の保存状態を表示
+        }
+        print(checkMarkArray19)
     }
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return  1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return synthetic.count
+        return  synthetic.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier19", for: indexPath)
+        cell.textLabel?.text = sortsynthetic[indexPath.row]
         
-        // Configure the cell...
-        cell.textLabel?.text = synthetic[indexPath.row]
+        if checkMarkArray19[indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print the text what selected by cell. In case that not find cell, return first row text
-        
         let currentCell = tableView.cellForRow(at: indexPath )!
-        //forced unwrap ! used because the text is optional type
-        //print(currentCell.textLabel!.text! as Any)
-        searchList(key: currentCell.textLabel!.text!,dict:Synthetic )
-        lectureCount()
-        //チェックマークする
-        currentCell.accessoryType = .checkmark
-    }
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at:indexPath)!
         
-        deleteList(key: currentCell.textLabel!.text!, dict: Synthetic)
-        // チェックマークを外す
-        currentCell.accessoryType = .none
-
+        checkMarkArray19[indexPath.row] = changeBool(value: checkMarkArray19[indexPath.row])//クリックした講義のboolを変換
+        
+        if checkMarkArray19[indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: SyntheticDictionar)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: SyntheticDictionar)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray19, forKey: "checkmarkarray19")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
     }
 }
