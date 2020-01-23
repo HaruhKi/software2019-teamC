@@ -392,7 +392,9 @@ class TableViewController4: UITableViewController {//人文
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedList = userDefaults.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+
+        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as? [String : Array<Double>] ?? [:]//前回保存した講義情報を取得
+                
         if userDefaults.array(forKey: "checkmarkarray4") == nil{//初期状態の時
             for _ in 0 ... humanities.count - 1 {
                 checkMarkArray4.append(false)
@@ -906,7 +908,7 @@ class TableViewController11: UITableViewController {//選択数学
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray11") == nil {//初期状態の時
