@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wKM-dC-crw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wKM-dC-crw">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -111,7 +111,7 @@
             </objects>
             <point key="canvasLocation" x="-4967.1999999999998" y="356.67166416791605"/>
         </scene>
-        <!--Item-->
+        <!--共通科目-->
         <scene sceneID="xjZ-ix-yhl">
             <objects>
                 <viewController id="2m0-S0-S2e" customClass="ViewController" customModule="softwearC" customModuleProvider="target" sceneMemberID="viewController">
@@ -186,7 +186,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8Us-Fk-EOa"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="O50-S8-Jrc" userLabel="共通科目"/>
+                    <tabBarItem key="tabBarItem" title="共通科目" id="O50-S8-Jrc" userLabel="共通科目"/>
                     <navigationItem key="navigationItem" id="xA4-xq-8Dj"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCf-mI-g5X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -206,6 +206,7 @@
                     <connections>
                         <segue destination="2m0-S0-S2e" kind="relationship" relationship="viewControllers" id="JOg-Hj-HNU"/>
                         <segue destination="bCY-Mu-q7Z" kind="relationship" relationship="viewControllers" id="F89-ae-Z86"/>
+                        <segue destination="wKM-dC-crw" kind="relationship" relationship="viewControllers" id="kOB-4c-hUw"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sX2-k0-XRl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -301,7 +302,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="ore-n0-w61"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Gi7-V4-nAv" userLabel="専門科目"/>
+                    <tabBarItem key="tabBarItem" title="専門科目" id="Gi7-V4-nAv" userLabel="専門科目"/>
                     <navigationItem key="navigationItem" id="hsJ-9Y-Z50"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjU-Ie-cWt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -861,6 +862,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="b4D-s2-2mP"/>
+        <segue reference="kOB-4c-hUw"/>
     </inferredMetricsTieBreakers>
 </document>
