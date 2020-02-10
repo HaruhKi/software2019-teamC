@@ -15,9 +15,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         //人文
         let label = UILabel()
-        if let lecture_num = lectureCounter["人文"]{
-            
-            label.text = String("\(lecture_num)"+"/2")
+        let lecture_num = lectureCounter["人文"]
+        print(lecture_num ?? "no item")
+        
+        if (lecture_num != nil){
+            label.text = String("\(lecture_num ?? 0)"+"/2")
+            if(Double(lecture_num!) >= 2.0){
+                label.textColor = UIColor.red
+            }
         }
         else{
             label.text = "0 /2"
@@ -33,6 +38,9 @@ class ViewController: UIViewController {
         let label2 = UILabel()
         if let lectureNum = lectureCounter["社会"]{
             label2.text = String("\(lectureNum)"+"/2")
+            if(Double(lecture_num!) >= 2.0){
+                label2.textColor = UIColor.red
+            }
         }
         else{
             label2.text = "0 /2"
@@ -46,6 +54,9 @@ class ViewController: UIViewController {
         let label3 = UILabel()
         if let natureCredit = lectureCounter["自然"]{
             label3.text = String("\(natureCredit)"+"/0")
+            if(Double(natureCredit) >= 1.0){
+                label3.textColor = UIColor.red
+            }
         }
         else{
             label3.text = "0 /0"
@@ -59,6 +70,9 @@ class ViewController: UIViewController {
         let label4 = UILabel()
         if let syntheticCredit = lectureCounter["総合"]{
             label4.text = String("\(syntheticCredit)"+"/2")
+            if(Double(syntheticCredit) >= 2.0){
+                label4.textColor = UIColor.red
+            }
         }
         else{
             label4.text = "0 /2"
@@ -72,6 +86,9 @@ class ViewController: UIViewController {
         let label5 = UILabel()
         if let careerCredit = lectureCounter["キャリア"]{
             label5.text = String("\(careerCredit)"+"/2")
+            if(Double(careerCredit) >= 2.0){
+                label5.textColor = UIColor.red
+            }
         }
         else{
             label5.text = "0 /2"
@@ -85,6 +102,9 @@ class ViewController: UIViewController {
         let label6 = UILabel()
         if let ryukyuCredit = lectureCounter["琉球"]{
             label6.text = String("\(ryukyuCredit)"+"/2")
+            if(Double(ryukyuCredit) >= 2.0){
+                label6.textColor = UIColor.red
+            }
         }
         else{
             label6.text = "0 /2"
@@ -98,6 +118,9 @@ class ViewController: UIViewController {
         let label7 = UILabel()
         if let relatedinfoCredit = lectureCounter["情報関連"]{
             label7.text = String("\(relatedinfoCredit)"+"/2")
+            if(Double(relatedinfoCredit) >= 2.0){
+                label7.textColor = UIColor.red
+            }
         }
         else{
             label7.text = "0 /2"
@@ -110,7 +133,10 @@ class ViewController: UIViewController {
         //外国語
         let label8 = UILabel()
         if let otherlangCredit = lectureCounter["外国語"]{
-            label8.text = String("\(otherlangCredit)"+"/24")
+            label8.text = String("\(otherlangCredit)"+"/12")
+            if(Double(otherlangCredit) >= 12.0){
+                label8.textColor = UIColor.red
+            }
         }
         else{
             label8.text = "0 /24"
@@ -125,6 +151,9 @@ class ViewController: UIViewController {
         let label9 = UILabel()
         if let sportCredit = lectureCounter["スポーツ"]{
             label9.text = String("\(sportCredit)"+"/2")
+            if(Double(sportCredit) >= 2.0){
+                label9.textColor = UIColor.red
+            }
         }
         else{
             label9.text = "0 /2"
@@ -146,6 +175,9 @@ class ViewController2: UIViewController {
         if let preparateCredit = lectureCounter["先修"]{
             
             label.text = String("\(preparateCredit)"+"/8")
+            if(Double(preparateCredit) >= 8.0){
+                label.textColor = UIColor.red
+            }
             print(preparateNum)
         }
         else{
@@ -164,6 +196,9 @@ class ViewController2: UIViewController {
         if let relatedInfoCredit = lectureCounter["情報技術系"]{
             
             label2.text = String("\(relatedInfoCredit)"+"/2")
+            if(Double(relatedInfoCredit) >= 2.0){
+                label2.textColor = UIColor.red
+            }
             print(infoTechNum)
         }
         else{
@@ -182,6 +217,9 @@ class ViewController2: UIViewController {
         if let generalExCredit = lectureCounter["総合力演習"]{
             
             label3.text = String("\(generalExCredit)"+"/7")
+            if(Double(generalExCredit) >= 7.0){
+                label3.textColor = UIColor.red
+            }
             print(generalExNum)
         }
         else{
@@ -197,8 +235,10 @@ class ViewController2: UIViewController {
         //研究実験
         let label4 = UILabel()
         if let ResearchExCredit = lectureCounter["研究実験"]{
-            
             label4.text = String("\(ResearchExCredit)"+"/15")
+            if(Double(ResearchExCredit) >= 15.0){
+                label4.textColor = UIColor.red
+            }
             print(ResearchExNum)
         }
         else{
@@ -215,8 +255,10 @@ class ViewController2: UIViewController {
         //必修基礎数学
         let label5 = UILabel()
         if let reqBasicMathCredit = lectureCounter["必修数学基礎"]{
-            
             label5.text = String("\(reqBasicMathCredit)"+"/6")
+            if(Double(reqBasicMathCredit) >= 6.0){
+                label5.textColor = UIColor.red
+            }
             print(reqBasicMathNum)
         }
         else{
@@ -235,6 +277,9 @@ class ViewController2: UIViewController {
         if let intelInfoCoreCredit = lectureCounter["知能情報コア"]{
             
             label6.text = String("\(intelInfoCoreCredit)"+"/26")
+            if(Double(intelInfoCoreCredit) >= 26.0){
+                label6.textColor = UIColor.red
+            }
             print(intelInfoCoreNum)
         }
         else{
@@ -253,6 +298,9 @@ class ViewController2: UIViewController {
         if let optEngineerCredit = lectureCounter["工学融合"]{
             
             label7.text = String("\(optEngineerCredit)"+"/4")
+            if(Double(optEngineerCredit) >= 4.0){
+                label7.textColor = UIColor.red
+            }
             print(optEngineerNum)
         }
         else{
@@ -290,6 +338,9 @@ class ViewController2: UIViewController {
         if let senmonACredit = lectureCounter["専門A(選数,知アド,知情関連)"]{
             
             label9.text = String("\(senmonACredit)"+"/22")
+            if(Double(senmonACredit) >= 22.0){
+                label9.textColor = UIColor.red
+            }
             print(senmonANum)
         }
         else{

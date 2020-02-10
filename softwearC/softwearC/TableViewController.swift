@@ -58,91 +58,101 @@ func searchList(key: String,dict: Dictionary<String, Array<Double>>){
         selectedList[key] = dict[key]
     }
     print("|select|")
-    print(selectedList)
+//    print(selectedList)
 }
 
 func deleteList(key: String,dict: Dictionary<String, Array<Double>>){
     selectedList[key] = nil
+    initlectureCount()
     print("|delete|")
-    print(selectedList)
+//    print(selectedList)
+}
+
+func initlectureCount(){
+    for data in lectureCounter{
+        lectureCounter[data.key] = 0
+        print("all delete ->",data.key)
+    }
 }
 
 func lectureCount(){
     //var lectureCounter : [String:Double] = [:]
-    
-    var humanitiesNum: Double = 0//0:人文
-    var otherlangNum: Double = 0//1:外国語
-    var naturalNum: Double = 0//2:自然系
-    var societyNum: Double = 0//3:社会系
-    var sportNum: Double = 0//4:スポーツ,運動
-    var getSyntheticNum: Double = 0//5:総合
-    var careerNum: Double = 0//6:キャリア
-    var ryukyuNum: Double = 0//7:琉球特色
-    var preparateNum: Double = 0//8:先修
-    var relatedInfoNum: Double = 0//9:情報関係
-    var infoTechNum: Double = 0//11:情報技術系
-    var generalExNum: Double = 0//12:総合力演習
-    var ResearchExNum: Double = 0//13:研究実験
-    var reqBasicMathNum: Double = 0//14:必修数学基礎
-    var intelInfoCoreNum: Double = 0//15:知能情報コア
-    var optEngineerNum: Double = 0//16:工学融合
-    var senmonANum: Double = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
+        
+    humanitiesNum = 0//0:人文
+    otherlangNum = 0//1:外国語
+    naturalNum = 0//2:自然系
+    societyNum = 0//3:社会系
+    sportNum = 0//4:スポーツ,運動
+    getSyntheticNum = 0//5:総合
+    careerNum = 0//6:キャリア
+    ryukyuNum = 0//7:琉球特色
+    preparateNum = 0//8:先修
+    relatedInfoNum = 0//9:情報関係
+    infoTechNum = 0//11:情報技術系
+    generalExNum = 0//12:総合力演習
+    ResearchExNum = 0//13:研究実験
+    reqBasicMathNum = 0//14:必修数学基礎
+    intelInfoCoreNum = 0//15:知能情報コア
+    optEngineerNum = 0//16:工学融合
+    senmonANum = 0//17:選択数学基礎,知能情報アドバンスト,知能情報関連
 
     for data in selectedList{
         let lectureNum = data.value
-        if lectureNum[0] == 0{
+        switch lectureNum[0] {
+        case 0:
             humanitiesNum += lectureNum[1]
             lectureCounter["人文"] = humanitiesNum
-        }else if lectureNum[0] == 1{
+        case 1:
             otherlangNum += lectureNum[1]
             lectureCounter["外国語"] = otherlangNum
-        }else if lectureNum[0] == 2{
+        case 2:
             naturalNum += lectureNum[1]
             lectureCounter["自然"] = naturalNum
-        }else if lectureNum[0] == 3{
+        case 3:
             societyNum += lectureNum[1]
             lectureCounter["社会"] = societyNum
-        }else if lectureNum[0] == 4{
+        case 4:
             sportNum += lectureNum[1]
             lectureCounter["スポーツ"] = sportNum
-        }else if lectureNum[0] == 5{
+        case 5:
             getSyntheticNum += lectureNum[1]
             lectureCounter["総合"] = getSyntheticNum
-        }else if lectureNum[0] == 6{
+        case 6:
             careerNum += lectureNum[1]
             lectureCounter["キャリア"] = careerNum
-        }else if lectureNum[0] == 7{
+        case 7:
             ryukyuNum += lectureNum[1]
             lectureCounter["琉球"] = ryukyuNum
-        }else if lectureNum[0] == 8{
+        case 8:
             preparateNum += lectureNum[1]
             lectureCounter["先修"] = preparateNum
-        }else if lectureNum[0] == 9{
+        case 9:
             relatedInfoNum += lectureNum[1]
             lectureCounter["情報関係"] = relatedInfoNum
-        }else if lectureNum[0] == 11{
+        case 11:
             infoTechNum += lectureNum[1]
             lectureCounter["情報技術系"] = infoTechNum
-        }else if lectureNum[0] == 12{
+        case 12:
             generalExNum += lectureNum[1]
             lectureCounter["総合力演習"] = generalExNum
-        }else if lectureNum[0] == 13{
+        case 13:
             ResearchExNum += lectureNum[1]
             lectureCounter["研究実験"] = ResearchExNum
-        }else if lectureNum[0] == 14{
+        case 14:
             reqBasicMathNum += lectureNum[1]
             lectureCounter["必修数学基礎"] = reqBasicMathNum
-        }else if lectureNum[0] == 15{
+        case 15:
             intelInfoCoreNum += lectureNum[1]
             lectureCounter["知能情報コア"] = intelInfoCoreNum
-        }else if lectureNum[0] == 16{
+        case 16:
             optEngineerNum += lectureNum[1]
             lectureCounter["工学融合"] = optEngineerNum
-        }else if lectureNum[0] == 17{
+        case 17:
             senmonANum += lectureNum[1]
             lectureCounter["専門A(選数,知アド,知情関連)"] = senmonANum
+        default:
+            print(lectureCounter)
         }
-        print(lectureCounter)
     }
 }
 
@@ -435,11 +445,11 @@ class TableViewController4: UITableViewController {//人文
         if checkMarkArray4[indexPath.row] == true {//クリックした講義がチェックされた時
             searchList(key: currentCell.textLabel!.text!,dict: HumanitiesDictionary)
             lectureCount()
-            print(selectedList)
+//            print(selectedList)
         }else{//クリックした講義がチェックなしの時
             deleteList(key: currentCell.textLabel!.text!, dict: HumanitiesDictionary)
             lectureCount()
-            print(selectedList)
+//            print(selectedList)
         }
         UserDefaults.standard.set(checkMarkArray4, forKey: "checkmarkarray4")//データ保存
         UserDefaults.standard.set(selectedList,forKey: "selectedList")
@@ -909,7 +919,7 @@ class TableViewController11: UITableViewController {//選択数学
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+//        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray11") == nil {//初期状態の時
             for _ in 0 ... opmath.count - 1 {
