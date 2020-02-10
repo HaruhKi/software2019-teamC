@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         
         //琉大特色
         let label6 = UILabel()
-        if let ryukyuCredit = lectureCounter["琉大特色"]{
+        if let ryukyuCredit = lectureCounter["琉球"]{
             label6.text = String("\(ryukyuCredit)"+"/2")
         }
         else{
