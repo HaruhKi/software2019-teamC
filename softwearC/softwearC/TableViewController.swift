@@ -31,7 +31,7 @@ let OptionalEngineeringDictionary = Major.getOptionalEngineeringDictionary()//�
 let RequiredBasicMathDictionary = Major.getRequiredBasicMathDictionary()//必修数学基礎
 let ResearchExperienceDictionary = Major.getResearchExperienceDictionary()//研究実験
 
-var selectedList :[String:Array<Double>] = [:]
+var selectedList :[String:Array<Double>] =  UserDefaults.standard.dictionary(forKey: "selectedList") as? [String : Array<Double>] ?? [:]
 var lectureCounter : [String:Double] = [:]
 
 var humanitiesNum: Double = 0//0:人文

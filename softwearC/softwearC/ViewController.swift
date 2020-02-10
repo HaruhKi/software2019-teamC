@@ -13,6 +13,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        lectureCount()
         //人文
         let label = UILabel()
         let lecture_num = lectureCounter["人文"]
