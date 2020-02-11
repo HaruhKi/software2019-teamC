@@ -30,7 +30,7 @@
 		2DEC93112387CDE00034759E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DEC93142387CDE00034759E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DEC93162387CDE00034759E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6C0D6B2423F2392B00424F54 /* たんマネ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "たんマネ.png"; path = "../../../Desktop/たんマネ.png"; sourceTree = "<group>"; };
+		6C0D6B2423F2392B00424F54 /* たんマネ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "たんマネ.png"; path = "../../たんマネ.png"; sourceTree = "<group>"; };
 		A244D52023A8AA580013EF2E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
