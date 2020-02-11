@@ -10,9 +10,15 @@ import UIKit
 
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var imageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //home画面
+        let image = UIImage(named:"たんマネ")
+        imageView.image = image
 
         lectureCount()
         //人文
