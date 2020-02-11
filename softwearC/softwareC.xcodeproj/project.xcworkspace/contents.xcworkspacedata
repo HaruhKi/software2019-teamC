@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:softwearC.xcodeproj">
+      location = "self:/Users/e185738/software2019-teamC/softwearC/softwareC.xcodeproj">
    </FileRef>
 </Workspace>

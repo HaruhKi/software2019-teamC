@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2DEC93022387CDDF0034759E /* Build configuration list for PBXProject "softwearC" */;
+			buildConfigurationList = 2DEC93022387CDDF0034759E /* Build configuration list for PBXProject "softwareC" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -305,6 +305,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = softwearC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -337,7 +338,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2DEC93022387CDDF0034759E /* Build configuration list for PBXProject "softwearC" */ = {
+		2DEC93022387CDDF0034759E /* Build configuration list for PBXProject "softwareC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2DEC93172387CDE00034759E /* Debug */,
