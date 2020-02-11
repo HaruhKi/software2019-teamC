@@ -38,8 +38,9 @@ class ViewController: UIViewController {
         
         //社会
         let label2 = UILabel()
-        if let lectureNum = lectureCounter["社会"]{
-            label2.text = String("\(lectureNum)"+"/2")
+        let lectureNum = lectureCounter["社会"]
+        if (lecture_num != nil){
+            label2.text = String("\(lectureNum ?? 0)"+"/2")
             if(Double(lecture_num!) >= 2.0){
                 label2.textColor = UIColor.red
             }
