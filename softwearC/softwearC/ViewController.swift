@@ -17,18 +17,17 @@ class ViewController: UIViewController {
         lectureCount()
         //人文
         let label = UILabel()
-        let lecture_num = lectureCounter["人文"]
-        print(lecture_num ?? "no item")
+        let humanitiesCredit = lectureCounter["人文"]
         
-        if (lecture_num != nil){
-            label.text = String("\(lecture_num ?? 0)"+"/2")
-            if(Double(lecture_num!) >= 2.0){
+        //取得単位が卒業単位満たしていたら文字が赤くなる
+        if (humanitiesCredit != nil){
+            label.text = String("\(humanitiesCredit ?? 0)"+"/2")
+            if(Double(humanitiesCredit!) >= 2.0){
                 label.textColor = UIColor.red
             }
         }
         else{
             label.text = "0 /2"
-            print(humanitiesNum)
         }
         label.font = label.font.withSize(30)//sizeTOFitの前にいれないと文字が切れる
         label.sizeToFit()
@@ -38,10 +37,11 @@ class ViewController: UIViewController {
         
         //社会
         let label2 = UILabel()
-        let lectureNum = lectureCounter["社会"]
-        if (lecture_num != nil){
-            label2.text = String("\(lectureNum ?? 0)"+"/2")
-            if(Double(lecture_num!) >= 2.0){
+        let societyCredit = lectureCounter["社会"]
+        
+        if (societyCredit != nil){
+            label2.text = String("\(societyCredit ?? 0)"+"/2")
+            if(Double(societyCredit!) >= 2.0){
                 label2.textColor = UIColor.red
             }
         }
