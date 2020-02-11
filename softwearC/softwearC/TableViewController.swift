@@ -1580,7 +1580,7 @@ class TableViewController19: UITableViewController {//総合
     }
 }
 
-class TableViewController20: UITableViewController {//共通集中
+class TableViewController20: UITableViewController {//集中講義
     let sortintensive = Intensive.sorted()//五十音でソート
     var checkMarkArray20 : [Bool] = []
     let userDefaults = UserDefaults.standard//保存機能
