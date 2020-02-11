@@ -185,7 +185,7 @@ class TableViewController: UITableViewController {//社会
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+       //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         print(selectedList)
         if userDefaults.array(forKey: "checkmarkarray") == nil {//初期状態の時
             for _ in 0 ... society.count - 1 {
@@ -258,7 +258,7 @@ class TableViewController2: UITableViewController {//健康体育
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         print(selectedList)
         if userDefaults.array(forKey: "checkmarkarray2") == nil {//初期状態の時
             for _ in 0 ... sport.count - 1 {
@@ -330,7 +330,7 @@ class TableViewController3: UITableViewController {//専修
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         print(selectedList)
         if userDefaults.array(forKey: "checkmarkarray3") == nil {//初期状態の時
             for _ in 0 ... preparatory.count - 1 {
@@ -475,7 +475,7 @@ class TableViewController5: UITableViewController {//キャリア
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         print(selectedList)
         if userDefaults.array(forKey: "checkmarkarray5") == nil {//初期状態の時
             for _ in 0 ... career.count - 1 {
@@ -548,7 +548,7 @@ class TableViewController6: UITableViewController {//自然
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         print(selectedList)
         if userDefaults.array(forKey: "checkmarkarray6") == nil {//初期状態の時
             for _ in 0 ... nature.count - 1 {
@@ -622,7 +622,7 @@ class TableViewController7: UITableViewController {//外国語
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray7") == nil {//初期状態の時
             for _ in 0 ... other.count - 1 {
@@ -696,7 +696,7 @@ class TableViewController8: UITableViewController {//琉球
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray8") == nil {//初期状態の時
             for _ in 0 ... ryukyu.count - 1 {
@@ -770,7 +770,7 @@ class TableViewController9: UITableViewController {//情報関係
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        ////selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray9") == nil {//初期状態の時
             for _ in 0 ... reinformation.count - 1 {
@@ -845,7 +845,7 @@ class TableViewController10: UITableViewController {//知能情報アドバン�
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray10") == nil {//初期状態の時
             for _ in 0 ... advance.count - 1 {
@@ -919,7 +919,7 @@ class TableViewController11: UITableViewController {//選択数学
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+//        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray11") == nil {//初期状態の時
             for _ in 0 ... opmath.count - 1 {
@@ -994,7 +994,7 @@ class TableViewController12: UITableViewController {//知能情報関連
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray12") == nil {//初期状態の時
             for _ in 0 ... computer.count - 1 {
@@ -1068,7 +1068,7 @@ class TableViewController13: UITableViewController {//総合力演習
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray13") == nil {//初期状態の時
             for _ in 0 ... general.count - 1 {
@@ -1143,7 +1143,7 @@ class TableViewController14: UITableViewController {//情報技術系
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray14") == nil {//初期状態の時
             for _ in 0 ... infomationtec.count - 1 {
@@ -1217,7 +1217,7 @@ class TableViewController15: UITableViewController {//工学融合
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray15") == nil {//初期状態の時
             for _ in 0 ... opengineer.count - 1 {
@@ -1292,7 +1292,7 @@ class TableViewController16: UITableViewController {//必修数学
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray16") == nil {//初期状態の時
             for _ in 0 ... remath.count - 1 {
@@ -1366,7 +1366,7 @@ class TableViewController17: UITableViewController {//研究実験
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray17") == nil {//初期状態の時
             for _ in 0 ... reex.count - 1 {
@@ -1439,7 +1439,7 @@ class TableViewController18: UITableViewController {//知能情報コア
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray18") == nil {//初期状態の時
             for _ in 0 ... core.count - 1 {
@@ -1513,7 +1513,7 @@ class TableViewController19: UITableViewController {//総合
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
         
         if userDefaults.array(forKey: "checkmarkarray19") == nil {//初期状態の時
             for _ in 0 ... synthetic.count - 1 {
