@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         lectureCount()
         //人文
         let label = UILabel()
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
 
         //情報関連
         let label7 = UILabel()
-        if let relatedinfoCredit = lectureCounter["情報関連"]{
+        if let relatedinfoCredit = lectureCounter["情報関係"]{
             label7.text = String("\(relatedinfoCredit)"+"/2")
             if(Double(relatedinfoCredit) >= 2.0){
                 label7.textColor = UIColor.red
