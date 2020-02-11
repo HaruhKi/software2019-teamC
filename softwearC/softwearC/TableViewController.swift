@@ -31,6 +31,8 @@ let OptionalEngineeringDictionary = Major.getOptionalEngineeringDictionary()//�
 let RequiredBasicMathDictionary = Major.getRequiredBasicMathDictionary()//必修数学基礎
 let ResearchExperienceDictionary = Major.getResearchExperienceDictionary()//研究実験
 
+let IntensivelectureDictionary  = Common.getIntensivelectureDictionary() //集中
+
 var selectedList :[String:Array<Double>] =  UserDefaults.standard.dictionary(forKey: "selectedList") as? [String : Array<Double>] ?? [:]
 var lectureCounter : [String:Double] = [:]
 
@@ -128,7 +130,7 @@ func lectureCount(){
             lectureCounter["先修"] = preparateNum
         case 9:
             relatedInfoNum += lectureNum[1]
-            lectureCounter["情報関係"] = relatedInfoNum
+            lectureCounter["情報関連"] = relatedInfoNum
         case 11:
             infoTechNum += lectureNum[1]
             lectureCounter["情報技術系"] = infoTechNum
@@ -175,6 +177,7 @@ let remath = [String] (RequiredBasicMathDictionary.keys)
 let reex = [String] (ResearchExperienceDictionary.keys)
 let core = [String] (IntelligentInfomationCore.keys)
 let synthetic = [String](SyntheticDictionar.keys)
+let Intensive = [String](IntensivelectureDictionary .keys)
 
 class TableViewController: UITableViewController {//社会
     
@@ -1577,3 +1580,68 @@ class TableViewController19: UITableViewController {//総合
     }
 }
 
+class TableViewController20: UITableViewController {//共通集中
+    let sortintensive = Intensive.sorted()//五十音でソート
+    var checkMarkArray20 : [Bool] = []
+    let userDefaults = UserDefaults.standard//保存機能
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //selectedList = UserDefaults.standard.dictionary(forKey: "selectedList") as! [String : Array<Double>]//前回保存した講義情報を取得
+        print(selectedList)
+        if userDefaults.array(forKey: "checkmarkarray20") == nil {//初期状態の時
+            for _ in 0 ... Intensive.count - 1 {
+                checkMarkArray20 .append(false)
+            }
+            UserDefaults.standard.set(checkMarkArray20 , forKey: "checkmarkarray20")
+        } else {//2回目以降
+            checkMarkArray20  = UserDefaults.standard.array(forKey: "checkmarkarray20") as! [Bool]//前回の保存状態を表示
+        }
+        
+        print(Intensive.count)
+        print(checkMarkArray20)
+    }
+    // MARK: - Table view data source
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return  1
+    }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return  Intensive.count
+    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier20", for: indexPath)
+        cell.textLabel?.text = sortintensive[indexPath.row]
+        if checkMarkArray20 [indexPath.row] == true {//trueの時はチェック
+            cell.accessoryType = .checkmark
+        } else {//falseの時はチェックなし
+            cell.accessoryType = .none
+        }
+        return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath )!
+        checkMarkArray20 [indexPath.row] = changeBool(value: checkMarkArray20 [indexPath.row])//クリックした講義のboolを変換
+        if checkMarkArray20 [indexPath.row] == true {//クリックした講義がチェックされた時
+            searchList(key: currentCell.textLabel!.text!,dict: IntensivelectureDictionary)
+            lectureCount()
+        }else{//クリックした講義がチェックなしの時
+            deleteList(key: currentCell.textLabel!.text!, dict: IntensivelectureDictionary)
+            lectureCount()
+        }
+        UserDefaults.standard.set(checkMarkArray20 , forKey: "checkmarkarray20")//データ保存
+        UserDefaults.standard.set(selectedList,forKey: "selectedList")
+        self.tableView.reloadData()//リロード
+    }
+    func changeBool(value: Bool) -> Bool {//true、falseの変更の関数
+        if value == true {
+            return false
+        } else {
+            return true
+        }
+    }
+    func viewWillAppear() {
+        self.tableView.reloadData()
+    }
+}
